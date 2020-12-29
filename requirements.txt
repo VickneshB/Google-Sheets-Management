@@ -1,0 +1,6 @@
+gspread
+pandas
+requests
+google_spreadsheet
+google-auth-oauthlib
+pickle-mixin
