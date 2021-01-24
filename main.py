@@ -18,6 +18,8 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SAMPLE_SPREADSHEET_ID_input = '16I939Q_1ZBmYigJxQnrQWQLKS40QAGmJbaNd3948n84'
 SAMPLE_RANGE_NAME = 'A1:AA1000'
 
+textColor = '\033[91m'
+textEnd = '\033[0m'
 
 # Exporting the Changes to the Sheet
 def Export_Data_To_Sheets(df, lineNumber):
@@ -67,7 +69,7 @@ def main():
 		if links[i] is not None and links[i] != 'None':
 			try:
 				request = requests.get(links[i])
-				if request.status_code == 200:
+				if request.status_code != 404:
 					print("Job Number", i, ":", 'Web site exists')
 				else:
 					print("Job Number", i, ":", 'Web site does not exist') 
@@ -77,11 +79,11 @@ def main():
 						df['Date Replied'][i] = str(today.strftime("%m/%d/%Y"))
 						updateCount = updateCount + 1
 						Export_Data_To_Sheets(df, i)
-						print("Job role no.", i, "was Updated")
+						print('\033[91m' + "Job role no.", i, "was Updated" + '\033[0m')
 			except:
 				print("Job Number", i, ":","Not a URL, No action taken")
 		else:
-			print("Job Number", i, ":", 'Web site does not exist')
+			print("Job Number", i, ":", "Web site does not exist")	
 			if df['Result'][i] != "Rejected" and df['Company Name'][i] is not None:
 				df['Result'][i] = 'Rejected'
 				df['Interview/Coding?'][i] = 'No'
@@ -90,7 +92,7 @@ def main():
 				df['Link'][i] = 'N/A'
 				updateCount = updateCount + 1
 				Export_Data_To_Sheets(df, i)
-				print("Job role no.", i, "was Updated")
+				print('\033[91m' + "Job role no.", i, "was Updated" + '\033[0m')
 
 	print("Total of updates made:", updateCount)
 
